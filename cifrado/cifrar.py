@@ -31,7 +31,7 @@ while respuesta == 'Si' or respuesta == 'si':
         with open('key.csv') as f:
             reader = csv.DictReader(f)
             for row in reader:
-                value = row['key']
+                value = row['key'] #imprime el valor de la clave
             print(value)
             with open('mensaje_encriptado.txt', 'rb') as f2:
                 raw_data = f2.read()
