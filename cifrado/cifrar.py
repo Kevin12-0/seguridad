@@ -1,4 +1,3 @@
-from itertools import count
 from cryptography.fernet import Fernet
 import csv
 
@@ -19,10 +18,10 @@ while respuesta == 'Si' or respuesta == 'si':
         print('Clave / Key : '+str(key))
         with open('key.csv', 'w+') as f:
             header = ['key']
-            writer = csv.DictWriter(f,fieldnames=header)
+            writer = csv.DictWriter(f, fieldnames=header)
             writer.writeheader()
-            writer.writerow({'key':key.decode('utf-8')})
-        file = open('mensaje_encriptado.txt','wb')
+            writer.writerow({'key': key.decode('utf-8')})
+        file = open('mensaje_encriptado.txt', 'wb')
         file.write(text_encrypt)
         file.close()
         respuesta = str(input('Desea realizar otra operacion: Si / No ? '))
@@ -30,15 +29,16 @@ while respuesta == 'Si' or respuesta == 'si':
             break
     if option == '2':
         with open('key.csv') as f:
-            reader = csv.reader(f)
-            next(reader)
+            reader = csv.DictReader(f)
             for row in reader:
-                csv_key = row[0]
-                print(Fernet(csv_key))
-        with open('mensaje_encriptado.txt','rb') as f:
-            raw_data = f.read()
-            mensaje_desencriptado = Fernet(csv_key).decrypt(raw_data).decode()                 
-        print("Mensaje desencriptado: " + str(mensaje_desencriptado))
-        respuesta = str(input('Desea realizar otra operacion Si / No ? '))
+                value = row['key']
+            print(value)
+            with open('mensaje_encriptado.txt', 'rb') as f2:
+                raw_data = f2.read()
+                mensaje_desencriptado = Fernet(
+                    value).decrypt(raw_data).decode()
+                print(mensaje_desencriptado)
+                # print(row['key'])
+        respuesta = str(input('Desea realizar otra operacion: Si / No ? '))
         if respuesta == 'No' or respuesta == 'no':
             break
